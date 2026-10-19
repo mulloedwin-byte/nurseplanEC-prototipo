@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#123b5d">
+<meta name="description" content="Prototipo educativo para elaborar planes de cuidados de enfermería.">
+<link rel="manifest" href="manifest.json">
+<title>NursePlan AI — Prototipo</title>
+<style>
+:root{--navy:#123b5d;--blue:#176b87;--teal:#d8f3ee;--bg:#f3f7fa;--ink:#183244;--muted:#617482;--line:#d9e4ea;--white:#fff;--orange:#fff3df}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);line-height:1.45}
+header{background:linear-gradient(135deg,#123b5d,#176b87);color:#fff;padding:22px 18px 26px;border-radius:0 0 24px 24px}
+.brand{display:flex;align-items:center;gap:11px}.logo{width:46px;height:46px;border-radius:14px;background:#d8f3ee;color:#123b5d;display:grid;place-items:center;font-size:26px;font-weight:800}
+h1{font-size:22px;margin:0}header p{margin:6px 0 0;color:#e0edf4;font-size:13px}
+main{max-width:760px;margin:auto;padding:16px 13px 38px}.notice{background:var(--orange);border:1px solid #f0d8a7;padding:11px 13px;border-radius:12px;font-size:12px;margin-bottom:14px}
+.tabs{display:flex;gap:8px;overflow:auto;padding:2px 0 12px}.tab{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;font-weight:650;color:var(--muted)}.tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:17px;padding:16px;margin-bottom:14px;box-shadow:0 4px 15px #123b5d08}
+h2{font-size:17px;margin:0 0 12px}h3{font-size:14px;margin:15px 0 7px;color:var(--blue)}
+label{display:block;font-size:12px;font-weight:750;color:#415b6b;margin:11px 0 5px}
+input,textarea,select{width:100%;border:1px solid #cbd9e1;border-radius:10px;padding:11px 12px;font:inherit;font-size:14px;background:#fff;color:var(--ink)}
+textarea{min-height:78px;resize:vertical}input:focus,textarea:focus,select:focus{outline:2px solid #8bd4cb;border-color:#176b87}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+button{border:0;border-radius:11px;padding:11px 14px;font-weight:750;font-size:13px;cursor:pointer;background:var(--navy);color:#fff}
+button.secondary{background:#e8f1f5;color:var(--navy)}button.teal{background:#d8f3ee;color:#15594f}button.danger{background:#fff0f0;color:#9d3030}
+.small{font-size:12px;color:var(--muted)}.result{background:#f1faf8;border:1px solid #c7e8e0;padding:12px;border-radius:12px;margin-top:10px;font-size:13px}
+.planitem{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:9px}.planitem strong{display:block}.planitem button{margin:7px 5px 0 0}
+.hidden{display:none!important}.tag{display:inline-block;background:#eaf2f6;color:#31566c;border-radius:6px;padding:3px 7px;font-size:11px;font-weight:700}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:12px}
+@media(max-width:480px){.grid{grid-template-columns:1fr}header{padding-top:18px}.panel{padding:13px}}
+@media print{body{background:#fff}header,.tabs,.notice,.no-print,footer{display:none!important}main{padding:0;max-width:none}.panel{box-shadow:none;border:0;padding:0;margin:0 0 12px;break-inside:avoid}input,textarea,select{border:0;padding:2px 0;appearance:none;resize:none}textarea{min-height:30px}.print-title{display:block!important}h2{margin-top:10px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><div class="logo">+</div><div><h1>NursePlan AI</h1><p>Constructor educativo del Proceso de Atención de Enfermería</p></div></div>
+</header>
+<main>
+ <div class="notice"><b>Prototipo educativo:</b> no sustituye el juicio clínico ni la supervisión docente. Usa únicamente casos ficticios; no ingreses nombres ni datos identificables de pacientes reales. Las sugerencias actuales son demostrativas, no una conexión a una IA en línea.</div>
+ <div class="tabs no-print">
+  <button class="tab active" data-tab="editor">Nuevo PAE</button>
+  <button class="tab" data-tab="saved">Mis planes</button>
+  <button class="tab" data-tab="assistant">Asistente</button>
+ </div>
+ <section id="editor">
+  <div class="panel">
+   <h2>1. Datos del caso académico</h2>
+   <div class="grid">
+    <div><label for="caseTitle">Título del caso</label><input id="caseTitle" placeholder="Ej. Dolor abdominal agudo"></div>
+    <div><label for="age">Edad</label><input id="age" placeholder="Ej. 24 años"></div>
+   </div>
+   <label for="setting">Contexto / servicio</label><input id="setting" placeholder="Ej. Emergencia, medicina interna, comunidad">
+   <label for="subjective">Datos subjetivos (lo que refiere)</label><textarea id="subjective" placeholder="Ej. Refiere dolor abdominal 8/10 desde hace 4 horas..."></textarea>
+   <label for="objective">Datos objetivos (lo observado/medido)</label><textarea id="objective" placeholder="Ej. Se observa inquietud; registrar signos vitales disponibles..."></textarea>
+  </div>
+  <div class="panel">
+   <h2>2. Diagnóstico de enfermería</h2>
+   <label for="diagnosis">Diagnóstico / problema priorizado</label><input id="diagnosis" placeholder="Ej. Dolor agudo (verificar con taxonomía autorizada)">
+   <label for="related">Factores relacionados / condiciones asociadas</label><textarea id="related" placeholder="Anotar solo lo sustentado por la valoración."></textarea>
+   <label for="evidence">Características definitorias / evidencias</label><textarea id="evidence" placeholder="Datos del caso que sustentan el diagnóstico."></textarea>
+  </div>
+  <div class="panel">
+   <h2>3. Planificación: resultados e intervenciones</h2>
+   <label for="outcome">Resultado esperado (NOC o formulación propia)</label><input id="outcome" placeholder="Ej. Mejorar el control del dolor">
+   <label for="indicators">Indicadores y meta</label><textarea id="indicators" placeholder="Ej. Describe el dolor; meta: mejorar según escala seleccionada..."></textarea>
+   <label for="interventions">Intervenciones (NIC o formulación propia)</label><textarea id="interventions" placeholder="Ej. Valorar dolor, observar evolución, aplicar medidas prescritas..."></textarea>
+   <label for="rationale">Fundamento científico</label><textarea id="rationale" placeholder="Escribir el fundamento con una fuente académica verificable."></textarea>
+  </div>
+  <div class="panel">
+   <h2>4. Ejecución y evaluación</h2>
+   <label for="implementation">Cuidados ejecutados (caso académico)</label><textarea id="implementation" placeholder="Qué se hizo, cuándo y qué respuesta se observó."></textarea>
+   <label for="evaluation">Evaluación del resultado</label><textarea id="evaluation" placeholder="Comparar situación inicial con resultado final; indicar si se alcanzó la meta."></textarea>
+   <label for="references">Referencias / observaciones</label><textarea id="references" placeholder="Autor, año, título, edición o enlace de la fuente consultada."></textarea>
+   <div class="btnrow no-print">
+    <button onclick="savePlan()">Guardar plan</button>
+    <button class="teal" onclick="exportPDF()">Exportar / imprimir PDF</button>
+    <button class="secondary" onclick="clearForm()">Limpiar formulario</button>
+   </div>
+   <p class="small no-print">Para guardar como PDF en Android: toca “Exportar / imprimir PDF”, elige “Guardar como PDF” en el menú de impresión y selecciona dónde guardarlo.</p>
+  </div>
+ </section>
+ <section id="saved" class="hidden">
+  <div class="panel"><h2>Mis planes guardados</h2><p class="small">Los planes se guardan únicamente en este navegador y dispositivo.</p><div id="planList"></div><div class="btnrow"><button class="secondary" onclick="downloadBackup()">Descargar copia de seguridad</button><button class="danger" onclick="deleteAll()">Eliminar todos los planes</button></div></div>
+ </section>
+ <section id="assistant" class="hidden">
+  <div class="panel">
+   <h2>Asistente de razonamiento (modo demostración)</h2>
+   <p class="small">Esta primera versión utiliza reglas sencillas en el dispositivo. No consulta internet ni genera recomendaciones clínicas personalizadas. Las sugerencias deben verificarse con fuentes autorizadas y con el docente.</p>
+   <label for="problem">Describe el problema principal del caso ficticio</label>
+   <textarea id="problem" placeholder="Ej. Persona refiere dolor abdominal 8/10, inicio hace 4 horas..."></textarea>
+   <label for="symptom">Área de valoración principal</label>
+   <select id="symptom"><option value="dolor">Dolor</option><option value="respiratorio">Respiración</option><option value="piel">Integridad de la piel</option><option value="movilidad">Movilidad</option><option value="nutricion">Nutrición e hidratación</option><option value="general">Otro / explorar valoración</option></select>
+   <div class="btnrow"><button onclick="suggest()">Generar guía inicial</button><button class="secondary" onclick="useSuggestion()">Pasar al formulario PAE</button></div>
+   <div id="suggestion" class="result hidden" aria-live="polite"></div>
+  </div>
+  <div class="panel"><h2>¿Cómo activar IA real más adelante?</h2><p>La integración real requiere un servicio de IA y una pequeña API segura en un servidor. No pegues una clave secreta de API dentro de esta aplicación, porque otros usuarios podrían extraerla. En el prototipo actual no se realizan llamadas externas ni se generan costos por IA.</p></div>
+ </section>
+ <footer>Prototipo de aprendizaje · NursePlan AI · No usar para tomar decisiones clínicas reales.</footer>
+</main>
+<script>
+const fields=['caseTitle','age','setting','subjective','objective','diagnosis','related','evidence','outcome','indicators','interventions','rationale','implementation','evaluation','references'];
+let latestSuggestion=null;
+function val(id){return document.getElementById(id).value.trim()}
+function setval(id,v){document.getElementById(id).value=v||''}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));['editor','saved','assistant'].forEach(id=>document.getElementById(id).classList.toggle('hidden',id!==b.dataset.tab));if(b.dataset.tab==='saved')renderPlans();}));
+function formData(){let o={};fields.forEach(k=>o[k]=val(k));return o}
+function loadData(o){fields.forEach(k=>setval(k,o[k]));}
+function getPlans(){try{return JSON.parse(localStorage.getItem('nurseplan_plans')||'[]')}catch(e){return []}}
+function putPlans(p){localStorage.setItem('nurseplan_plans',JSON.stringify(p))}
+function savePlan(){const d=formData();if(!d.caseTitle){alert('Escribe un título para el caso antes de guardar.');return}let p=getPlans();p.unshift({id:Date.now(),updated:new Date().toLocaleString('es-EC'),data:d});putPlans(p);alert('Plan guardado en este dispositivo.');}
+function renderPlans(){let p=getPlans(),el=document.getElementById('planList');if(!p.length){el.innerHTML='<p class="small">Todavía no tienes planes guardados.</p>';return}el.innerHTML=p.map(x=>`<div class="planitem"><strong>${esc(x.data.caseTitle||'Caso sin título')}</strong><span class="small">${esc(x.updated||'')}</span><div class="small">${esc(x.data.diagnosis||'Sin diagnóstico registrado')}</div><button class="secondary" onclick="openPlan(${x.id})">Abrir</button><button class="secondary" onclick="pdfPlan(${x.id})">PDF</button><button class="danger" onclick="removePlan(${x.id})">Eliminar</button></div>`).join('')}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function openPlan(id){let p=getPlans().find(x=>x.id===id);if(!p)return;loadData(p.data);document.querySelector('[data-tab="editor"]').click();window.scrollTo({top:0,behavior:'smooth'})}
+function removePlan(id){if(confirm('¿Eliminar este plan?')){putPlans(getPlans().filter(x=>x.id!==id));renderPlans()}}
+function deleteAll(){if(confirm('¿Eliminar permanentemente todos los planes guardados en este navegador?')){localStorage.removeItem('nurseplan_plans');renderPlans()}}
+function clearForm(){if(confirm('¿Limpiar todos los campos del formulario?'))fields.forEach(k=>setval(k,''))}
+function exportPDF(){document.title='PAE - '+(val('caseTitle')||'Caso académico');window.print()}
+function pdfPlan(id){let p=getPlans().find(x=>x.id===id);if(!p)return;loadData(p.data);document.querySelector('[data-tab="editor"]').click();setTimeout(exportPDF,200)}
+function downloadBackup(){const blob=new Blob([JSON.stringify(getPlans(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='respaldo_nurseplan.json';a.click();URL.revokeObjectURL(a.href)}
+function suggest(){
+ const s=document.getElementById('symptom').value, text=val('problem');let title='',checks=[],actions=[],warning='Verifica el diagnóstico, los resultados, los indicadores y las intervenciones con la edición autorizada de las taxonomías, el contexto del caso y la supervisión docente.';
+ const map={
+ dolor:{title:'Explorar posible problema relacionado con dolor',checks:['Inicio, localización, duración, características, irradiación y factores que alivian o agravan.','Intensidad con una escala adecuada y cambios durante la valoración.','Signos vitales, manifestaciones observables y síntomas acompañantes.'],actions:['Registrar la valoración inicial y reevaluar después de las intervenciones.','Identificar signos de alarma y comunicar oportunamente cambios clínicos.','Aplicar medidas de confort y tratamientos únicamente según competencia, prescripción y protocolo.'],dx:'Posible área diagnóstica: dolor (validar etiqueta y factores según taxonomía vigente).',noc:'Resultado a considerar: control del dolor o nivel de malestar, según la taxonomía disponible.',nic:'Intervenciones a explorar: manejo del dolor y vigilancia, según valoración y protocolo.'},
+ respiratorio:{title:'Explorar estado respiratorio',checks:['Frecuencia, patrón y esfuerzo respiratorio.','Saturación de oxígeno si está disponible y calidad de la medición.','Auscultación y síntomas asociados, dentro de la competencia profesional.'],actions:['Valorar cambios y posición que facilite la respiración si procede.','Escalar de inmediato dificultad respiratoria, cianosis o deterioro agudo.','Seguir protocolo institucional y prescripciones vigentes.'],dx:'Explorar problemas de ventilación, oxigenación o patrón respiratorio según los datos.',noc:'Resultado a considerar: estado respiratorio, según datos y taxonomía autorizada.',nic:'Intervenciones a explorar: monitorización respiratoria y manejo de vía aérea según protocolo.'},
+ piel:{title:'Explorar integridad cutánea',checks:['Inspección de piel, prominencias óseas y zonas de presión.','Movilidad, humedad, nutrición y dispositivos que ejerzan presión.','Características, localización y dimensiones de cualquier lesión.'],actions:['Documentar hallazgos y evolución de la piel.','Valorar riesgo y aplicar medidas preventivas individualizadas.','Solicitar valoración especializada ante lesión o deterioro.'],dx:'Explorar riesgo o alteración de integridad cutánea según hallazgos.',noc:'Resultado a considerar: integridad tisular o estado de la piel.',nic:'Intervenciones a explorar: vigilancia de la piel y prevención de lesiones por presión.'},
+ movilidad:{title:'Explorar movilidad y seguridad',checks:['Capacidad para cambios posturales, transferencias y marcha.','Dolor, fuerza, equilibrio, ayudas técnicas y antecedentes de caídas.','Entorno, barreras y nivel de asistencia necesario.'],actions:['Aplicar medidas de seguridad y prevención de caídas.','Favorecer movilidad segura acorde con la valoración y el plan.','Solicitar apoyo para transferencias cuando sea necesario.'],dx:'Explorar limitaciones de movilidad o riesgos de seguridad según valoración.',noc:'Resultado a considerar: movilidad o conducta de prevención de caídas.',nic:'Intervenciones a explorar: ayuda con la movilidad y prevención de caídas.'},
+ nutricion:{title:'Explorar nutrición e hidratación',checks:['Ingesta reciente, apetito, tolerancia y cambios de peso.','Signos de hidratación y balance de líquidos cuando corresponda.','Factores culturales, funcionales, económicos y clínicos relevantes.'],actions:['Registrar ingesta y tolerancia según indicación.','Identificar signos de alarma y necesidades de valoración especializada.','Adaptar educación a necesidades y contexto de la persona.'],dx:'Explorar necesidades nutricionales o de hidratación según evidencia.',noc:'Resultado a considerar: estado nutricional o equilibrio hídrico, según el caso.',nic:'Intervenciones a explorar: monitorización nutricional y manejo de líquidos según protocolo.'},
+ general:{title:'Completar valoración antes de proponer un diagnóstico',checks:['Identificar motivo de atención y prioridades expresadas por la persona.','Separar datos subjetivos de datos objetivos.','Obtener antecedentes, riesgos, examen pertinente y signos vitales disponibles.'],actions:['Organizar los datos y detectar vacíos de información.','Priorizar riesgos inmediatos y consultar al equipo ante señales de alarma.','Relacionar cada hipótesis diagnóstica con datos que la sustenten.'],dx:'No proponer una etiqueta diagnóstica sin datos suficientes.',noc:'Definir el resultado después de establecer prioridades y línea basal.',nic:'Seleccionar intervenciones después de validar el diagnóstico y las necesidades.'}
+ };
+ const m=map[s];latestSuggestion={...m,caseText:text};let html=`<b>${m.title}</b><p><b>Datos que conviene valorar</b></p><ul>${m.checks.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><p><b>Acciones educativas a considerar</b></p><ul>${m.actions.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><p><b>Diagnóstico a explorar:</b> ${esc(m.dx)}</p><p><b>Resultado a explorar:</b> ${esc(m.noc)}</p><p><b>Intervenciones a explorar:</b> ${esc(m.nic)}</p><p><b>Precaución:</b> ${esc(warning)}</p>`;if(text)html+=`<p class="small"><b>Descripción ingresada:</b> ${esc(text)}</p>`;document.getElementById('suggestion').innerHTML=html;document.getElementById('suggestion').classList.remove('hidden')
+}
+function useSuggestion(){if(!latestSuggestion){alert('Primero genera una guía inicial.');return}if(!val('caseTitle'))setval('caseTitle','Caso académico - '+document.getElementById('symptom').selectedOptions[0].text);if(!val('subjective'))setval('subjective',latestSuggestion.caseText);if(!val('diagnosis'))setval('diagnosis',latestSuggestion.dx);if(!val('outcome'))setval('outcome',latestSuggestion.noc);if(!val('interventions'))setval('interventions',latestSuggestion.nic);document.querySelector('[data-tab="editor"]').click();window.scrollTo({top:0,behavior:'smooth'})}
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body>
+</html>
